@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "reZach.BudgetTransactionAnalyzer.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "budget \"C:\\Users\\zachary\\source\\repos\\DiscoverTransactionAnalyzer\\Transactions\\Discover-Transactions-2023-05-02.csv\""
+    }
+  }
+}

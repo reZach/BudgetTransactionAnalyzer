@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameWork Condition="$(TargetFrameworks) == ''">net7.0</TargetFrameWork>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Commands - Copy\**" />
+    <Compile Remove="Properties - Copy\**" />
+    <EmbeddedResource Remove="Commands - Copy\**" />
+    <EmbeddedResource Remove="Properties - Copy\**" />
+    <None Remove="Commands - Copy\**" />
+    <None Remove="Properties - Copy\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Spectre.Console.Cli.Extensions.DependencyInjection" Version="0.1.0" />
+    <PackageReference Include="Spectre.Console" Version="0.45.0" />
+    <PackageReference Include="Spectre.Console.Cli" Version="0.45.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\reZach.BudgetTransactionAnalyzer.Business\reZach.BudgetTransactionAnalyzer.Business.csproj" />
+  </ItemGroup>
+
+</Project>

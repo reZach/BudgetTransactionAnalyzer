@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Console", "Console", "{361D496C-C7B2-46B5-A904-87E834361D0B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Models", "Models", "{7C530447-ACD2-4C65-A5DD-54450C418D2A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{A2878EBC-9D3B-4AF9-AF79-09A3BD9AA294}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{DFE8BBE5-5943-451C-917C-D8DA4B42D15C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "reZach.BudgetTransactionAnalyzer.Models", "reZach.BudgetTransactionAnalyzer.Models\reZach.BudgetTransactionAnalyzer.Models.csproj", "{C4C9EB2D-5783-4A8A-842F-D8D71CBE84E3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "reZach.BudgetTransactionAnalyzer.Business", "reZach.BudgetTransactionAnalyzer.Business\reZach.BudgetTransactionAnalyzer.Business.csproj", "{27523B38-342C-4B8C-912A-9262C1BC7239}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "reZach.BudgetTransactionAnalyzer.Tests", "reZach.BudgetTransactionAnalyzer.Tests\reZach.BudgetTransactionAnalyzer.Tests.csproj", "{92C75F65-F815-453A-8474-578B06ACA955}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "reZach.BudgetTransactionAnalyzer.Console", "reZach.BudgetTransactionAnalyzer.Console\reZach.BudgetTransactionAnalyzer.Console.csproj", "{113FC853-A06E-4A23-B6C8-F1250129A0A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C4C9EB2D-5783-4A8A-842F-D8D71CBE84E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4C9EB2D-5783-4A8A-842F-D8D71CBE84E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4C9EB2D-5783-4A8A-842F-D8D71CBE84E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4C9EB2D-5783-4A8A-842F-D8D71CBE84E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27523B38-342C-4B8C-912A-9262C1BC7239}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27523B38-342C-4B8C-912A-9262C1BC7239}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27523B38-342C-4B8C-912A-9262C1BC7239}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27523B38-342C-4B8C-912A-9262C1BC7239}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92C75F65-F815-453A-8474-578B06ACA955}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92C75F65-F815-453A-8474-578B06ACA955}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92C75F65-F815-453A-8474-578B06ACA955}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92C75F65-F815-453A-8474-578B06ACA955}.Release|Any CPU.Build.0 = Release|Any CPU
+		{113FC853-A06E-4A23-B6C8-F1250129A0A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{113FC853-A06E-4A23-B6C8-F1250129A0A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{113FC853-A06E-4A23-B6C8-F1250129A0A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{113FC853-A06E-4A23-B6C8-F1250129A0A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C4C9EB2D-5783-4A8A-842F-D8D71CBE84E3} = {7C530447-ACD2-4C65-A5DD-54450C418D2A}
+		{27523B38-342C-4B8C-912A-9262C1BC7239} = {A2878EBC-9D3B-4AF9-AF79-09A3BD9AA294}
+		{92C75F65-F815-453A-8474-578B06ACA955} = {DFE8BBE5-5943-451C-917C-D8DA4B42D15C}
+		{113FC853-A06E-4A23-B6C8-F1250129A0A1} = {361D496C-C7B2-46B5-A904-87E834361D0B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3FCC66F1-4CB7-4344-93A2-5C03D1464CF6}
+	EndGlobalSection
+EndGlobal
