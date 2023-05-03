@@ -13,6 +13,10 @@ namespace reZach.BudgetTransactionAnalyzer.Business.Preprocessors
             {
                 CSVTransactionRecord trans = transactions[i];
 
+                // Ignore cc payments
+                if (string.Equals(trans.Category, "Payments and Credits", StringComparison.OrdinalIgnoreCase))
+                    continue;
+
                 // If the transaction is from Verizon, the category of the transaction should be "Phone"
                 if (trans.Description.Contains("VZWRLSS*PRPAY AUTOPAY"))
                     trans.Category = "Phone";
