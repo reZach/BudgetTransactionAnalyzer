@@ -1,8 +1,10 @@
 ﻿using reZach.BudgetTransactionAnalyzer.Business.CSV;
+using reZach.BudgetTransactionAnalyzer.Business.Postprocessors;
 using reZach.BudgetTransactionAnalyzer.Business.Preprocessors;
 using reZach.BudgetTransactionAnalyzer.Models;
 using reZach.BudgetTransactionAnalyzer.Models.CSV;
 using reZach.BudgetTransactionAnalyzer.Models.CSV.ClassMaps;
+using reZach.BudgetTransactionAnalyzer.Models.Reports;
 
 namespace reZach.BudgetTransactionAnalyzer.Business
 {
@@ -10,14 +12,16 @@ namespace reZach.BudgetTransactionAnalyzer.Business
     {
         private readonly ICSVProcessor _csvProcessor;
         private readonly IDiscoverPreprocessor _discoverPreprocessor;
+        private readonly IPostprocessor _postprocessor;
 
-        public Driver(ICSVProcessor csvProcessor, IDiscoverPreprocessor discoverPreprocessor)
+        public Driver(ICSVProcessor csvProcessor, IDiscoverPreprocessor discoverPreprocessor, IPostprocessor postprocessor)
         {
             _csvProcessor = csvProcessor;
             _discoverPreprocessor = discoverPreprocessor;
+            _postprocessor = postprocessor;
         }
 
-        public void ProcessTransactions(string transactionsFolderPath, string settingsFilePath)
+        public List<TransactionRecord> ProcessTransactions(string transactionsFolderPath, string settingsFilePath)
         {
             string folderPath = new FileInfo(transactionsFolderPath).Directory.FullName;
 
@@ -45,6 +49,71 @@ namespace reZach.BudgetTransactionAnalyzer.Business
                     masterTransactions.AddRange(_discoverPreprocessor.ProcessTransactions(transactions));
                 }
             }
+
+            // Post-process (ie. exclude transactions)
+            masterTransactions = _postprocessor.ProcessTransactions(masterTransactions);
+
+            return masterTransactions;
+        }
+
+        public List<CategorySpendByMonth> GetAverageSpend(List<TransactionRecord> transactions, int? numberOfPastMonths = null)
+        {
+            List<CategorySpendByMonth> spendByMonth = new List<CategorySpendByMonth>();
+
+            // We sort here so we can retrieve the latest year in the line below
+            transactions = transactions.OrderByDescending(t => t.Date.Year).ToList();
+
+            int year = transactions[0].Date.Year;
+            IEnumerable<IGrouping<int, TransactionRecord>> byMonth = transactions.GroupBy(t => t.Date.Month);
+
+            for (int i = 0; i < byMonth.Count(); i++)
+            {
+                int month = byMonth.ElementAt(i).Key;
+                IEnumerable<IGrouping<Category, TransactionRecord>> categories = byMonth
+                    .ElementAt(i)
+                    .Where(m => m.Date.Year == year)
+                    .GroupBy(g => g.Category);
+
+                for (int j = 0; j < categories.Count(); j++)
+                {
+                    double sum = categories
+                        .ElementAt(j)
+                        .Sum(c => c.Amount);
+
+                    spendByMonth.Add(new CategorySpendByMonth
+                    {
+                        Category = categories.ElementAt(j).Key,
+                        Total = Math.Round(sum, 2),
+                        Date = new DateTime(year, month, 1)
+                    });
+                }
+
+                // Adjust year; if we roll over to a previous year, decrement the year
+                if (i + 1 < byMonth.Count() && byMonth.ElementAt(i + 1).Key > byMonth.ElementAt(i).Key)
+                    year--;
+            }
+
+
+            List<CategorySpendByMonth> final = new List<CategorySpendByMonth>();
+
+            IEnumerable<IGrouping<Category, CategorySpendByMonth>> averageByCategory = spendByMonth
+                .GroupBy(s => s.Category);
+
+            for (int i = 0; i < averageByCategory.Count(); i++)
+            {
+                double average = Math.Round(averageByCategory.ElementAt(i).Sum(s => s.Total) / byMonth.Count(), 2);
+
+                final.Add(new CategorySpendByMonth
+                {
+                    Category = averageByCategory.ElementAt(i).Key,
+                    Total = average,
+                    Date = averageByCategory.ElementAt(i).First().Date
+                });
+            }
+
+            final = final.OrderBy(f => Enum.GetName(typeof(Category), f.Category)).ToList();            
+
+            return final;
         }
     }
 }

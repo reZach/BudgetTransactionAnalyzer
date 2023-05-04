@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using reZach.BudgetTransactionAnalyzer.Business.CSV;
+using reZach.BudgetTransactionAnalyzer.Business.Postprocessors;
 using reZach.BudgetTransactionAnalyzer.Business.Preprocessors;
 
 namespace reZach.BudgetTransactionAnalyzer.Business.DependencyInjection
@@ -16,6 +17,7 @@ namespace reZach.BudgetTransactionAnalyzer.Business.DependencyInjection
             serviceCollection
                 .AddTransient<ICSVProcessor, CSVProcessor>()
                 .AddTransient<IDiscoverPreprocessor, DiscoverPreprocessor>()
+                .AddTransient<IPostprocessor, Postprocessor>()
                 .AddTransient<IDriver, Driver>();
 
             return serviceCollection;

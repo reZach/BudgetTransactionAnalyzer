@@ -3,7 +3,7 @@ using reZach.BudgetTransactionAnalyzer.Models.CSV;
 
 namespace reZach.BudgetTransactionAnalyzer.Business.Preprocessors
 {
-    public interface IProcessor
+    public interface IPreprocessor
     {
         List<TransactionRecord> ProcessTransactions(List<CSVTransactionRecord> transactions);
     }

@@ -1,7 +1,11 @@
-﻿namespace reZach.BudgetTransactionAnalyzer.Business
+﻿using reZach.BudgetTransactionAnalyzer.Models;
+using reZach.BudgetTransactionAnalyzer.Models.Reports;
+
+namespace reZach.BudgetTransactionAnalyzer.Business
 {
     public interface IDriver
     {
-        void ProcessTransactions(string transactionsFolderPath, string settingsFilePath);
+        List<TransactionRecord> ProcessTransactions(string transactionsFolderPath, string settingsFilePath);
+        List<CategorySpendByMonth> GetAverageSpend(List<TransactionRecord> transactions, int? numberOfPastMonths = null);
     }
 }
