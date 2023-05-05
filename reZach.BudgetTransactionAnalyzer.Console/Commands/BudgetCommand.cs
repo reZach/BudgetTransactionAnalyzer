@@ -108,7 +108,7 @@ namespace reZach.BudgetTransactionAnalyzer.Console.Commands
                         for (int i = 0; i < allTransactions.Count; i++)
                         {
                             table.AddRow(
-                                allTransactions[i].Date.ToString(), 
+                                allTransactions[i].Date.ToString("MM-dd-yyyy"), 
                                 allTransactions[i].Description,
                                 allTransactions[i].Amount.ToString("c"),
                                 allTransactions[i].Category.ToString()
