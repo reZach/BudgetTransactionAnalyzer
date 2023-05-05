@@ -6,25 +6,25 @@ namespace reZach.BudgetTransactionAnalyzer.Business.Postprocessors
 {
     public sealed class Postprocessor : IPostprocessor
     {
-        private readonly UserSettingsFile _userSettings;
-
         public Postprocessor()
         {
-            _userSettings = LoadUserSettings();
+
         }
 
-        public List<TransactionRecord> ProcessTransactions(List<TransactionRecord> transactions)
+        public List<TransactionRecord> ProcessTransactions(List<TransactionRecord> transactions, string settingsFilePath = null)
         {
-            if (!_userSettings.ExcludedTransactions.Any())
+            UserSettingsFile userSettings = LoadUserSettings(settingsFilePath);
+
+            if (!userSettings.ExcludedTransactions.Any())
                 return transactions;
 
             // Exclude transactions that match any criteria that might be in our settings file            
 
             return transactions
-                .Where(t => 
-                    _userSettings.ExcludedTransactions
-                        .FirstOrDefault(e => 
-                        
+                .Where(t =>
+                    userSettings.ExcludedTransactions
+                        .FirstOrDefault(e =>
+
                             // If the date [is present, and] matches, and
                             (e.Date.HasValue ? e.Date == t.Date : true) &&
 
@@ -36,17 +36,35 @@ namespace reZach.BudgetTransactionAnalyzer.Business.Postprocessors
                 .ToList();
         }
 
-        private UserSettingsFile LoadUserSettings()
+        private UserSettingsFile LoadUserSettings(string settingsFilePath)
         {
-            string settings = File.ReadAllText("C:\\Users\\zachary\\source\\repos\\BudgetTransactionAnalyzer\\reZach.BudgetTransactionAnalyzer.Console\\bin\\Debug\\net7.0\\settings.json");
+            if (string.IsNullOrEmpty(settingsFilePath))
+            {
+                // Attempt to find settings file in current directory
+                settingsFilePath = $"{Directory.GetCurrentDirectory()}\\settings.json";
+            }
 
-            UserSettingsFile userSettings = JsonSerializer.Deserialize<UserSettingsFile>(settings);
+            if (Path.Exists(settingsFilePath) && Path.GetFileName(settingsFilePath).Contains(".json"))
+            {
+                string rawSettingsText = File.ReadAllText(settingsFilePath);
+                UserSettingsFile userSettings = JsonSerializer.Deserialize<UserSettingsFile>(rawSettingsText);
 
-            // Remove empty entries;
-            // we do this as empty entries would break filtering in the ProcessTransactions method
-            userSettings.ExcludedTransactions.RemoveAll(e => !e.Date.HasValue && !e.Amount.HasValue && string.IsNullOrEmpty(e.Description));
+                // Remove empty entries;
+                // we do this as empty entries would break filtering in the ProcessTransactions method
+                userSettings.ExcludedTransactions.RemoveAll(e => !e.Date.HasValue && !e.Amount.HasValue && string.IsNullOrEmpty(e.Description));
 
-            return userSettings;
+                return userSettings;
+            }
+            else
+            {
+                // Settings file does not exist; return an "empty" file
+                File.WriteAllText($"{Directory.GetCurrentDirectory()}\\settings.json", JsonSerializer.Serialize(new UserSettingsFile(), new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                }));
+
+                return new UserSettingsFile();
+            }
         }
     }
 }

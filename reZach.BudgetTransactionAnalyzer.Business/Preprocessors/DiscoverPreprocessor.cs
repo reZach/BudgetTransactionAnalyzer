@@ -18,8 +18,16 @@ namespace reZach.BudgetTransactionAnalyzer.Business.Preprocessors
                     continue;
 
                 // If the transaction is from Verizon, the category of the transaction should be "Phone"
-                if (trans.Description.Contains("VZWRLSS*PRPAY AUTOPAY"))
+                if (trans.Description.Contains("VZWRLSS*PRPAY AUTOPAY") || trans.Description.Contains("VERIZON*TELESALE"))
                     trans.Category = "Phone";
+
+                // If the transaction is a "Services" transaction it's a "fun-money" transaction                
+                else if (string.Equals(trans.Category, "Services", StringComparison.OrdinalIgnoreCase))
+                    trans.Category = "Travel/ Entertainment";
+
+                // These are app store purchases and need to be re-categorized
+                else if (trans.Description.StartsWith("GOOGLE *") && string.Equals(trans.Category, "Merchandise", StringComparison.OrdinalIgnoreCase))
+                    trans.Category = "Travel/ Entertainment";
 
                 processed.Add(new TransactionRecord
                 {
@@ -28,17 +36,17 @@ namespace reZach.BudgetTransactionAnalyzer.Business.Preprocessors
                     Amount = trans.Amount,
                     Category = trans.Category switch
                     {
-                        "Department Stores" => Category.DepartmentStores,
-                        "Gasoline" => Category.Gasoline,
-                        "Home Improvement" => Category.HomeImprovement,
-                        "Medical Services" => Category.MedicalServices,
-                        "Merchandise" => Category.Merchandise,
-                        "Phone" => Category.Phone,
-                        "Restaurants" => Category.Restaurants,
-                        "Services" => Category.Services,
-                        "Supermarkets" => Category.Supermarkets,
-                        "Travel/ Entertainment" => Category.TravelEntertainment,
-                        _ => Category.Unknown
+                        "Department Stores" => BudgetCategory.DepartmentStores,
+                        "Gasoline" => BudgetCategory.Gasoline,
+                        "Home Improvement" => BudgetCategory.HomeImprovement,
+                        "Medical Services" => BudgetCategory.MedicalServices,
+                        "Merchandise" => BudgetCategory.Merchandise,
+                        "Phone" => BudgetCategory.Phone,
+                        "Restaurants" => BudgetCategory.Restaurants,
+                        "Services" => BudgetCategory.Services,
+                        "Supermarkets" => BudgetCategory.Supermarkets,
+                        "Travel/ Entertainment" => BudgetCategory.TravelEntertainment,
+                        _ => BudgetCategory.Unknown
                     }
                 });
             }

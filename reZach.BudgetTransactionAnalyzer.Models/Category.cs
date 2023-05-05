@@ -1,6 +1,6 @@
 ﻿namespace reZach.BudgetTransactionAnalyzer.Models
 {
-    public enum Category
+    public enum BudgetCategory
     {
         Unknown = 0,
         DepartmentStores,

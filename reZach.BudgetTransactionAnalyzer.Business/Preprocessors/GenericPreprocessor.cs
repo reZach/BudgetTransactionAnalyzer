@@ -14,7 +14,7 @@ namespace reZach.BudgetTransactionAnalyzer.Business.Preprocessors
                 Amount = t.Amount,
                 Category = t.Category switch
                 {
-                    _ => Category.Unknown
+                    _ => BudgetCategory.Unknown
                 }
             }).ToList();
         }

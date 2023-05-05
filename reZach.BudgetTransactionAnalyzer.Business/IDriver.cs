@@ -7,5 +7,6 @@ namespace reZach.BudgetTransactionAnalyzer.Business
     {
         List<TransactionRecord> ProcessTransactions(string transactionsFolderPath, string settingsFilePath);
         List<CategorySpendByMonth> GetAverageSpend(List<TransactionRecord> transactions, int? numberOfPastMonths = null);
+        List<TransactionRecord> LoadAllTransactions(string transactionsFolderPath);
     }
 }

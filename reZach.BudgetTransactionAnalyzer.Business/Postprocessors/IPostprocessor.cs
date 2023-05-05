@@ -4,6 +4,6 @@ namespace reZach.BudgetTransactionAnalyzer.Business.Postprocessors
 {
     public interface IPostprocessor
     {
-        List<TransactionRecord> ProcessTransactions(List<TransactionRecord> transactions);
+        List<TransactionRecord> ProcessTransactions(List<TransactionRecord> transactions, string settingsFilePath = null);
     }
 }
