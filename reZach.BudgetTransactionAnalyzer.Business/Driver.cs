@@ -5,19 +5,24 @@ using reZach.BudgetTransactionAnalyzer.Models;
 using reZach.BudgetTransactionAnalyzer.Models.CSV;
 using reZach.BudgetTransactionAnalyzer.Models.CSV.ClassMaps;
 using reZach.BudgetTransactionAnalyzer.Models.Reports;
+using System.Collections.Generic;
 
 namespace reZach.BudgetTransactionAnalyzer.Business
 {
     public class Driver : IDriver
     {
         private readonly ICSVProcessor _csvProcessor;
+        private readonly IGenericPreprocessor _genericPreprocessor;
         private readonly IDiscoverPreprocessor _discoverPreprocessor;
+        private readonly IAmexPreprocessor _amexPreprocessor;
         private readonly IPostprocessor _postprocessor;
 
-        public Driver(ICSVProcessor csvProcessor, IDiscoverPreprocessor discoverPreprocessor, IPostprocessor postprocessor)
+        public Driver(ICSVProcessor csvProcessor, IGenericPreprocessor genericPreprocessor, IDiscoverPreprocessor discoverPreprocessor, IAmexPreprocessor amexPreprocessor, IPostprocessor postprocessor)
         {
             _csvProcessor = csvProcessor;
+            _genericPreprocessor = genericPreprocessor;
             _discoverPreprocessor = discoverPreprocessor;
+            _amexPreprocessor = amexPreprocessor;
             _postprocessor = postprocessor;
         }
 
@@ -97,7 +102,9 @@ namespace reZach.BudgetTransactionAnalyzer.Business
 
         public List<TransactionRecord> LoadAllTransactions(string transactionsFolderPath)
         {
-            return LoadTransactionsPrivate(transactionsFolderPath);
+            List<TransactionRecord> transactions = LoadTransactionsPrivate(transactionsFolderPath);
+
+            return transactions.OrderByDescending(t => t.Date).ToList();
         }
 
         private List<TransactionRecord> LoadTransactionsPrivate(string transactionsFolderPath)
@@ -130,10 +137,15 @@ namespace reZach.BudgetTransactionAnalyzer.Business
                     transactions = _csvProcessor.ReadCSVFile<DiscoverTransactionRecordClassMap>(transactionFiles[i]);
                     masterTransactions.AddRange(_discoverPreprocessor.ProcessTransactions(transactions));
                 }
+                else if (Path.GetFileNameWithoutExtension(transactionFiles[i]).Contains("american-express", StringComparison.OrdinalIgnoreCase))
+                {
+                    transactions = _csvProcessor.ReadCSVFile<AmexTransactionRecordClassMap>(transactionFiles[i]);
+                    masterTransactions.AddRange(_amexPreprocessor.ProcessTransactions(transactions));
+                }
                 else
                 {
                     _csvProcessor.ReadCSVFile(transactionFiles[i]);
-                    masterTransactions.AddRange(_discoverPreprocessor.ProcessTransactions(transactions));
+                    masterTransactions.AddRange(_genericPreprocessor.ProcessTransactions(transactions));
                 }
             }
 

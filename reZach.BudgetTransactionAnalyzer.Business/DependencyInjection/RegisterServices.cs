@@ -16,7 +16,9 @@ namespace reZach.BudgetTransactionAnalyzer.Business.DependencyInjection
         {
             serviceCollection
                 .AddTransient<ICSVProcessor, CSVProcessor>()
+                .AddTransient<IGenericPreprocessor, GenericPreprocessor>()
                 .AddTransient<IDiscoverPreprocessor, DiscoverPreprocessor>()
+                .AddTransient<IAmexPreprocessor, AmexPreprocessor>()
                 .AddTransient<IPostprocessor, Postprocessor>()
                 .AddTransient<IDriver, Driver>();
 

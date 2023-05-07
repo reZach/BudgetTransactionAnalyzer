@@ -3,7 +3,7 @@ using reZach.BudgetTransactionAnalyzer.Models.CSV;
 
 namespace reZach.BudgetTransactionAnalyzer.Business.Preprocessors
 {
-    public sealed class GenericPreprocessor : BasePreprocessor, IDiscoverPreprocessor
+    public sealed class GenericPreprocessor : BasePreprocessor, IGenericPreprocessor
     {
         public override List<TransactionRecord> ProcessTransactions(List<CSVTransactionRecord> transactions)
         {
